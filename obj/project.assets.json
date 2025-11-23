@@ -1247,6 +1247,22 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "Swashbuckle.AspNetCore.SwaggerGen/9.0.6": {
+        "type": "package",
+        "dependencies": {
+          "Swashbuckle.AspNetCore.Swagger": "9.0.6"
+        },
+        "compile": {
+          "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore.SwaggerUI/9.0.6": {
         "type": "package",
         "compile": {
@@ -4061,6 +4077,24 @@
         "swashbuckle.aspnetcore.swagger.nuspec"
       ]
     },
+    "Swashbuckle.AspNetCore.SwaggerGen/9.0.6": {
+      "sha512": "yYrDs5qpIa4UXP+a02X0ZLQs6HSd1C8t6hF6J1fnxoawi3PslJg1yUpLBS89HCbrDACzmwEGG25il+8aa0zdnw==",
+      "type": "package",
+      "path": "swashbuckle.aspnetcore.swaggergen/9.0.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll",
+        "lib/net8.0/Swashbuckle.AspNetCore.SwaggerGen.pdb",
+        "lib/net8.0/Swashbuckle.AspNetCore.SwaggerGen.xml",
+        "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll",
+        "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.pdb",
+        "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.xml",
+        "package-readme.md",
+        "swashbuckle.aspnetcore.swaggergen.9.0.6.nupkg.sha512",
+        "swashbuckle.aspnetcore.swaggergen.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore.SwaggerUI/9.0.6": {
       "sha512": "WGsw/Yop9b16miq8TQd4THxuEgkP5cH3+DX93BrX9m0OdPcKNtg2nNm77WQSAsA+Se+M0bTiu8bUyrruRSeS5g==",
       "type": "package",
@@ -5123,6 +5157,7 @@
       "Scalar.AspNetCore >= 2.10.3",
       "Scalar.AspNetCore.Microsoft >= 2.10.3",
       "Swashbuckle.AspNetCore.Swagger >= 9.0.6",
+      "Swashbuckle.AspNetCore.SwaggerGen >= 9.0.6",
       "Swashbuckle.AspNetCore.SwaggerUI >= 9.0.6"
     ]
   },
@@ -5132,11 +5167,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\mohamed\\RiderProjects\\tenant\\CRM.API\\CRM.API.csproj",
+      "projectUniqueName": "C:\\Users\\mohamed\\RiderProjects\\tenant\\CRM.API\\CRM.API.csproj",
       "projectName": "CRM.API",
-      "projectPath": "c:\\Users\\mohamed\\RiderProjects\\tenant\\CRM.API\\CRM.API.csproj",
+      "projectPath": "C:\\Users\\mohamed\\RiderProjects\\tenant\\CRM.API\\CRM.API.csproj",
       "packagesPath": "C:\\Users\\mohamed\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\mohamed\\RiderProjects\\tenant\\CRM.API\\obj\\",
+      "outputPath": "C:\\Users\\mohamed\\RiderProjects\\tenant\\CRM.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mohamed\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -5228,6 +5263,10 @@
             "version": "[2.10.3, )"
           },
           "Swashbuckle.AspNetCore.Swagger": {
+            "target": "Package",
+            "version": "[9.0.6, )"
+          },
+          "Swashbuckle.AspNetCore.SwaggerGen": {
             "target": "Package",
             "version": "[9.0.6, )"
           },

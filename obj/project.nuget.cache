@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "szBv4eT48Zw=",
+  "dgSpecHash": "Z9kORxXgEtQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\mohamed\\RiderProjects\\tenant\\CRM.API\\CRM.API.csproj",
   "expectedPackageFiles": [
@@ -64,6 +64,7 @@
     "C:\\Users\\mohamed\\.nuget\\packages\\scalar.aspnetcore\\2.10.3\\scalar.aspnetcore.2.10.3.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\scalar.aspnetcore.microsoft\\2.10.3\\scalar.aspnetcore.microsoft.2.10.3.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\9.0.6\\swashbuckle.aspnetcore.swagger.9.0.6.nupkg.sha512",
+    "C:\\Users\\mohamed\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\9.0.6\\swashbuckle.aspnetcore.swaggergen.9.0.6.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\9.0.6\\swashbuckle.aspnetcore.swaggerui.9.0.6.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",
     "C:\\Users\\mohamed\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
