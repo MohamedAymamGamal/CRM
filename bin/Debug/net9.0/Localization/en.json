@@ -1,0 +1,22 @@
+{
+    "login": {
+        "title": "Login",
+        "email": "Email",
+        "password": "Password",
+        "login": "Sign In"
+    },
+    "Register": {
+        "title": "Create Account",
+        "email": "Email",
+        "password": "Password",
+        "register": "Register",
+        "Login_successful": "Login successful :)",
+        "login_failed": "Login failed email or password is incorrect"
+    },
+    "message": {
+        "Error": "Error",
+        "Success": "Success",
+        "warning": "warning"
+        
+    }
+}

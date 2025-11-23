@@ -9,8 +9,8 @@ namespace CRM.API.Interface.authentication
 {
     public interface IAuthenticationServices
     {
-        Task<bool> LoginAsync(loginRequestDto request);
-        Task<bool> RegisterAsync(RegisterRequestDto request);
+        Task<UserResponceDto<bool>> LoginAsync(loginRequestDto request);
+        Task<(bool Success, List<string> Errors)> RegisterAsync(RegisterRequestDto request);
         Task<bool> ForgotPasswordAsync(RegisterRequestDto request);
         Task<bool> ResetPasswordAsync(RegisterRequestDto request);
         Task<bool> ChangePasswordAsync(RegisterRequestDto request);

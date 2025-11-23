@@ -11,11 +11,11 @@ namespace CRM.API.Service
 {
 
     public class AuthenticationService(
-        
+
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager
-    
-    
+        SignInManager<ApplicationUser> signInManager,
+        JsonLocalizationService loc
+
     ) : IAuthenticationServices
     {
         public Task<bool> ChangePasswordAsync(RegisterRequestDto request)
@@ -28,10 +28,27 @@ namespace CRM.API.Service
             throw new NotImplementedException();
         }
 
-        public async Task<bool> LoginAsync(loginRequestDto request)
+        public async Task<UserResponceDto<bool>> LoginAsync(loginRequestDto request)
         {
-           var result = await signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
-           return result.Succeeded;
+            var result = await signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
+            if (result.Succeeded)
+            {
+                return new UserResponceDto<bool>
+                {
+                    IsSuccess = true,
+                    Data = true,
+                    Message = loc.localize("Register.Login_successful")
+                };
+            }
+            else
+            {
+                return new UserResponceDto<bool>
+                {
+                    IsSuccess = false,
+                    Data = false,
+                    Message = loc.localize("Register.login_failed")
+                };
+            }
         }
 
         public Task<bool> RefreshTokenAsync(RegisterRequestDto request)
@@ -39,12 +56,12 @@ namespace CRM.API.Service
             throw new NotImplementedException();
         }
 
-        public async Task<bool> RegisterAsync(RegisterRequestDto request)
+        public async Task<(bool Success, List<string> Errors)> RegisterAsync(RegisterRequestDto request)
         {
             ArgumentNullException.ThrowIfNull(request.Email);
             ArgumentNullException.ThrowIfNull(request.Password);
 
-              var user = new ApplicationUser
+            var user = new ApplicationUser
             {
                 Email = request.Email,
                 UserName = request.Email,
@@ -56,8 +73,16 @@ namespace CRM.API.Service
             };
 
             var result = await userManager.CreateAsync(user, request.Password);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors
+                    .Select(e => $"{e.Code}: {e.Description}")
+                    .ToList();
 
-            return result.Succeeded ? true : throw new Exception("Unable to create user, Errors: " + result.Errors);
+                return (false, errors);
+            }
+
+            return (true, new List<string>());
         }
 
         public Task<bool> ResetPasswordAsync(RegisterRequestDto request)
