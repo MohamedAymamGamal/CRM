@@ -19,9 +19,11 @@ namespace CRM.API.Service
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         JsonLocalizationService loc,
-        IApplicatiomEmailSender applicationEmailSender
+        IApplicatiomEmailSender applicationEmailSender,
+        ItokenService tokenService 
     ) : IAuthenticationServices
     {
+         private readonly ItokenService _tokenService = tokenService;
         public Task<bool> ChangePasswordAsync(RegisterRequestDto request)
         {
             throw new NotImplementedException();
@@ -81,6 +83,7 @@ namespace CRM.API.Service
             }
 
             user.VerificationCode = GenerateVerificationCode();
+            user.VerificationCodeExpiry = DateTime.UtcNow.AddMinutes(5);
             var result = await userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
@@ -118,19 +121,20 @@ namespace CRM.API.Service
                 };
             }
 
-            bool isCodeValid = user.VerificationCode != null && user.VerificationCode.ToString() == request.Code;
-            if (isCodeValid)
+            // 1. Check expiry
+            if (user.VerificationCodeExpiry == null || user.VerificationCodeExpiry < DateTime.UtcNow)
             {
-                user.EmailConfirmed = true;
-                user.IsActive = true;
-                var result = await userManager.UpdateAsync(user);
                 return new UserResponceDto<bool>
                 {
-                    IsSuccess = result.Succeeded,
-                    Message = result.Succeeded ? "Email confirmed successfully" : "Email confirmation failed"
+                    IsSuccess = false,
+                    Message = "Verification code expired, please request a new one"
                 };
             }
-            else
+
+            bool isCodeValid = user.VerificationCode != null &&
+                               user.VerificationCode.ToString() == request.Code;
+
+            if (!isCodeValid)
             {
                 return new UserResponceDto<bool>
                 {
@@ -138,6 +142,22 @@ namespace CRM.API.Service
                     Message = "Invalid confirmation code"
                 };
             }
+
+            // 3. Mark email confirmed
+            user.EmailConfirmed = true;
+            user.IsActive = true;
+
+            // Clear code after success
+            user.VerificationCode = null;
+            user.VerificationCodeExpiry = null;
+
+            var result = await userManager.UpdateAsync(user);
+
+            return new UserResponceDto<bool>
+            {
+                IsSuccess = result.Succeeded,
+                Message = result.Succeeded ? "Email confirmed successfully" : "Failed to confirm email"
+            };
         }
 
         public Task<bool> ForgotPasswordAsync(RegisterRequestDto request)
@@ -148,10 +168,13 @@ namespace CRM.API.Service
         public async Task<UserResponceDto<bool>> LoginAsync(loginRequestDto request)
         {
             var result = await signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
+            var user = await userManager.FindByEmailAsync(request.Email);
             if (result.Succeeded)
             {
+                var token  = _tokenService.CreateToken(user);
                 return new UserResponceDto<bool>
                 {
+                    Token = token,
                     IsSuccess = true,
                     Data = true,
                     Message = loc.localize("Register.Login_successful")

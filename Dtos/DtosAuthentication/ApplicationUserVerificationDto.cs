@@ -13,5 +13,7 @@ namespace CRM.API.Dtos.DtosAuthentication
         public required string Email { get; set; }
 
         public string FullName { get; set; } = "CRM User";
+
+        public string? Code { get; set; }
     }
 }
