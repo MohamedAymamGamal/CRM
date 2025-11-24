@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using api.Helpers;
 using CRM.API.Dtos.DtosAuthentication;
 using CRM.API.Interface.authentication;
-using CRM.API.Service;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.API.AuthenticationController.auth
@@ -34,21 +28,33 @@ namespace CRM.API.AuthenticationController.auth
             var (success, errors) = await authenticationService.RegisterAsync(request);
             if (!success)
                 return BadRequest(ApiResponse.Error(
-                    errors, 
-                    loc.localize("Register.Login failed")
+                    errors,
+                    loc.localize("Register.Login_failed")
+                ));
 
+            return Ok(ApiResponse.Success(
+                null,
+                loc.localize("Register.Login_successful")
             ));
 
-            return Ok(ApiResponse.Success(null, "Registered successfully"));
+
+        }
+        [HttpPost("confirm-email")]
+        [DisplayName("Confirm Email")]
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailInputDto request)
+        {
+            var response = await authenticationService.ConfirmEmailAsync(request);
+            return response.IsSuccess ? Ok() : BadRequest(response);
         }
 
-        // [HttpPost("forgot-password")]
-        // [DisplayName("Forgot Password")]
-        // public async Task<IActionResult> ForgotPassword([FromBody] ApplicationUserRegisterInputModel request)
-        // {
-        //     var response = await authenticationService.ForgotPasswordAsync(request);
-        //     return response ? Ok(response) : StatusCode(500);
-        // }
+        [HttpPost("confirm-email-verify-code")]
+        [DisplayName("Confirm Email Verify Code")]
+        public async Task<IActionResult> ConfirmEmailVerifyCode([FromBody] ConfirmEmailInputDto request)
+        {
+            var response = await authenticationService.ConfirmEmailVerifyCodeAsync(request);
+            return response.IsSuccess ? Ok() : BadRequest(response);
+        }
+
 
         // [HttpPost("reset-password")]
         // [DisplayName("Reset Password")]

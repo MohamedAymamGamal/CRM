@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CRM.API.Dtos.DtosAuthentication;
-using Microsoft.AspNetCore.Identity.Data;
 
 namespace CRM.API.Interface.authentication
 {
@@ -16,5 +15,9 @@ namespace CRM.API.Interface.authentication
         Task<bool> ChangePasswordAsync(RegisterRequestDto request);
         Task<bool> RefreshTokenAsync(RegisterRequestDto request);
 
+        Task<UserResponceDto<bool>> ConfirmEmailAsync( ConfirmEmailInputDto request);
+        Task<UserResponceDto<bool>> ConfirmEmailVerifyCodeAsync(ConfirmEmailInputDto request);
+
+        
     }
 }

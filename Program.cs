@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using CRM.API.AuthenticationController.auth;
 using CRM.API.Data;
+using CRM.API.Interface;
 using CRM.API.Interface.authentication;
+using CRM.API.Model;
 using CRM.API.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
@@ -15,7 +17,9 @@ builder.Services.AddSingleton<JsonLocalizationService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IAuthenticationServices, AuthenticationService>();
-
+builder.Services.AddScoped<IApplicatiomEmailSender, ApplicaitonEmailSender>();
+builder.Services.Configure<Emailconfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
+ builder.Services.AddSingleton<IApplicatiomEmailSender, ApplicaitonEmailSender>();
 // Database
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {

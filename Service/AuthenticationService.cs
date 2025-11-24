@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using CRM.API.Dtos.DtosAuthentication;
+using CRM.API.Helpers;
+using CRM.API.Interface;
 using CRM.API.Interface.authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
@@ -14,13 +18,126 @@ namespace CRM.API.Service
 
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        JsonLocalizationService loc
-
+        JsonLocalizationService loc,
+        IApplicatiomEmailSender applicationEmailSender
     ) : IAuthenticationServices
     {
         public Task<bool> ChangePasswordAsync(RegisterRequestDto request)
         {
             throw new NotImplementedException();
+        }
+        private short GenerateVerificationCode()
+        {
+            Random random = new Random();
+            return (short)random.Next(1000, 9999);
+        }
+
+        private async Task SendEmailConfirmationCodeAsync(ConfirmEmailInputDto request)
+        {
+
+            var emailContent = TemplateHelper.LoadTemplate("confirm-email.html", new Dictionary<string, string>
+            {
+                { "FullName", request.FullName },
+          { "Code", request.Code }
+            });
+
+            MailMessage mail = new();
+            mail.To.Add(request.Email);
+            mail.Subject = "CRM | Email Confirmation";
+
+            var alternateView = AlternateView.CreateAlternateViewFromString(
+                emailContent,
+                null,
+                MediaTypeNames.Text.Html
+            );
+
+            mail.AlternateViews.Add(alternateView);
+
+            await applicationEmailSender.SendEmailAsync(mail);
+        }
+
+        public async Task<UserResponceDto<bool>> ConfirmEmailAsync(ConfirmEmailInputDto request)
+        {
+            ArgumentNullException.ThrowIfNull(request.Email);
+            var user = await userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+            {
+                return new UserResponceDto<bool>
+                {
+                    IsSuccess = false,
+                    Message = "User not found",
+                    Data = false
+                };
+            }
+
+            if (user.EmailConfirmed)
+            {
+                return new UserResponceDto<bool>
+                {
+                    IsSuccess = false,
+                    Message = "Email already confirmed",
+                    Data = false
+                };
+            }
+
+            user.VerificationCode = GenerateVerificationCode();
+            var result = await userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return new UserResponceDto<bool>
+                {
+                    IsSuccess = false,
+                    Message = "Failed to save verification code"
+                };
+            }
+
+            // Send email with verification code
+            request.Code = user.VerificationCode.ToString();
+            request.FullName = $"{user.FirstName} {user.LastName}";
+            await SendEmailConfirmationCodeAsync(request);
+            return new UserResponceDto<bool>
+            {
+                IsSuccess = true,
+                Message = "Verification code sent successfully"
+            };
+        }
+
+        public async Task<UserResponceDto<bool>> ConfirmEmailVerifyCodeAsync(ConfirmEmailInputDto request)
+        {
+            ArgumentNullException.ThrowIfNull(request.Email);
+            ArgumentNullException.ThrowIfNull(request.Code);
+
+            var user = await userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+            {
+                return new UserResponceDto<bool>
+                {
+                    IsSuccess = false,
+                    Message = "User not found"
+                };
+            }
+
+            bool isCodeValid = user.VerificationCode != null && user.VerificationCode.ToString() == request.Code;
+            if (isCodeValid)
+            {
+                user.EmailConfirmed = true;
+                user.IsActive = true;
+                var result = await userManager.UpdateAsync(user);
+                return new UserResponceDto<bool>
+                {
+                    IsSuccess = result.Succeeded,
+                    Message = result.Succeeded ? "Email confirmed successfully" : "Email confirmation failed"
+                };
+            }
+            else
+            {
+                return new UserResponceDto<bool>
+                {
+                    IsSuccess = false,
+                    Message = "Invalid confirmation code"
+                };
+            }
         }
 
         public Task<bool> ForgotPasswordAsync(RegisterRequestDto request)
@@ -89,5 +206,6 @@ namespace CRM.API.Service
         {
             throw new NotImplementedException();
         }
+
     }
 }
