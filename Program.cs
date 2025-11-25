@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using api.Service;
-using CRM.API.AuthenticationController.auth;
 using CRM.API.Data;
 using CRM.API.Interface;
 using CRM.API.Interface.authentication;
@@ -10,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using CRM.API.Service;
+using MyApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,15 +27,21 @@ builder.Services.AddScoped<ItokenService, TokenService>();
 builder.Services.Configure<Emailconfiguration>(
     builder.Configuration.GetSection("EmailConfiguration")
 );
-
+builder.Services.AddCustomRateLimiting(); 
+builder.Services.AddScoped<TenantContext>();
+builder.Services.AddDbContext<TenantDbContext>();
+builder.Services.AddScoped<TenantResolver>();
+builder.Services.AddScoped<LandlordDbContext>();
 // -------------------------------------------------------------
 // Database
 // -------------------------------------------------------------
-builder.Services.AddDbContext<ApplicationDBContext>(options =>
+builder.Services.AddDbContext<LandlordDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LandlordConnection"));
 });
 
+builder.Services.AddDbContext<TenantDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TenantConnection")));
 
 // -------------------------------------------------------------
 // Identity
@@ -49,7 +54,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
 })
-.AddEntityFrameworkStores<ApplicationDBContext>()
+.AddEntityFrameworkStores<LandlordDbContext>()
 .AddDefaultTokenProviders();
 
 // -------------------------------------------------------------
@@ -138,7 +143,9 @@ if (app.Environment.IsDevelopment())
         UseShellExecute = true
     });
 }
-
+//Middleware rate limiter
+app.UseCustomRateLimiting();   
+// -------------------------------------------------------------         
 app.UseHttpsRedirection();
 
 app.UseAuthentication();   
@@ -147,6 +154,3 @@ app.UseAuthorization();
 app.MapControllers();
 app.Run();
 
-internal class ApplicationEmailSender
-{
-}

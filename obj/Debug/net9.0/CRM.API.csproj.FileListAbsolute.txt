@@ -63,6 +63,7 @@ C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\Newtonsoft.Json.B
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\Scalar.AspNetCore.dll
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\Scalar.AspNetCore.Microsoft.dll
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\System.ClientModel.dll
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\System.CodeDom.dll
@@ -166,6 +167,7 @@ C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\CRM.API.AssemblyI
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\CRM.API.csproj.CoreCompileInputs.cache
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\CRM.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\CRM.API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\CRM.API.sourcelink.json
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
@@ -180,5 +182,3 @@ C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\refint\CRM.API.dl
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\CRM.API.pdb
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\CRM.API.genruntimeconfig.cache
 C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\ref\CRM.API.dll
-C:\Users\mohamed\RiderProjects\tenant\CRM.API\obj\Debug\net9.0\CRM.API.sourcelink.json
-C:\Users\mohamed\RiderProjects\tenant\CRM.API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll

@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
-using System.Threading.Tasks;
 using CRM.API.Dtos.DtosAuthentication;
 using CRM.API.Helpers;
 using CRM.API.Interface;
 using CRM.API.Interface.authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 
 namespace CRM.API.Service
 {

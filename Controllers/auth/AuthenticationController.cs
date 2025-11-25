@@ -3,6 +3,7 @@ using System.ComponentModel;
 using CRM.API.Dtos.DtosAuthentication;
 using CRM.API.Interface.authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace CRM.API.AuthenticationController.auth
 {
@@ -15,6 +16,7 @@ namespace CRM.API.AuthenticationController.auth
 
         [HttpPost("login")]
         [DisplayName("Login")]
+        [EnableRateLimiting("AuthPolicy")]
         public async Task<IActionResult> LoginAsync([FromBody] loginRequestDto request)
         {
             var response = await authenticationService.LoginAsync(request);
@@ -23,6 +25,8 @@ namespace CRM.API.AuthenticationController.auth
 
         [HttpPost("register")]
         [DisplayName("Register")]
+        [EnableRateLimiting("AuthPolicy")]
+
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
             var (success, errors) = await authenticationService.RegisterAsync(request);
@@ -41,6 +45,8 @@ namespace CRM.API.AuthenticationController.auth
         }
         [HttpPost("confirm-email")]
         [DisplayName("Confirm Email")]
+        [EnableRateLimiting("AuthPolicy")]
+
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailInputDto request)
         {
             var response = await authenticationService.ConfirmEmailAsync(request);
@@ -49,6 +55,8 @@ namespace CRM.API.AuthenticationController.auth
 
         [HttpPost("confirm-email-verify-code")]
         [DisplayName("Confirm Email Verify Code")]
+        [EnableRateLimiting("AuthPolicy")]
+
         public async Task<IActionResult> ConfirmEmailVerifyCode([FromBody] ConfirmEmailInputDto request)
         {
             var response = await authenticationService.ConfirmEmailVerifyCodeAsync(request);
